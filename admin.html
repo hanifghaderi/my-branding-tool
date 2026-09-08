@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>برندینگ · مدیریت</title>
+
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+
+    <!-- Carbon Design System v11 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@carbon/styles@1.50.0/css/styles.min.css" />
+
+    <!-- SheetJS برای خروجی اکسل -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
+    </script>
+
+    <style>
+        /* ===== Override Carbon for RTL ===== */
+        :root {
+            --cds-font-family: 'Vazirmatn', 'IBM Plex Sans Arabic', sans-serif;
+            --cds-body-font-size: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'IBM Plex Sans Arabic', sans-serif;
+            background: #f4f4f4;
+            color: #161616;
+            padding: 16px;
+            direction: rtl;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid #6f6f6f;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .admin-header {
+            border-bottom: 3px solid #161616;
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+        .admin-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #161616;
+        }
+        .admin-header .sub {
+            font-size: 14px;
+            color: #6f6f6f;
+            margin-top: 4px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .cds--btn {
+            font-family: 'Vazirmatn', 'IBM Plex Sans Arabic', sans-serif;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cds--btn:active {
+            transform: scale(0.97);
+        }
+        .cds--btn--primary {
+            background: #161616;
+            color: #ffffff;
+        }
+        .cds--btn--primary:hover {
+            background: #393939;
+        }
+        .cds--btn--success {
+            background: #2a6a2a;
+            color: #ffffff;
+        }
+        .cds--btn--success:hover {
+            background: #1a5a1a;
+        }
+        .cds--btn--danger {
+            background: #aa3333;
+            color: #ffffff;
+        }
+        .cds--btn--danger:hover {
+            background: #8a2222;
+        }
+        .cds--btn--ghost {
+            background: transparent;
+            color: #161616;
+            border: 1px solid #d0d0d0;
+        }
+        .cds--btn--ghost:hover {
+            background: #e8e8e8;
+        }
+        .cds--btn .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== Stats ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 14px 16px;
+            text-align: center;
+            background: #f8f8f8;
+            transition: border-color 0.2s;
+        }
+        .stat-card:hover {
+            border-color: #b0b0b0;
+        }
+        .stat-card .number {
+            font-size: 30px;
+            font-weight: 700;
+            color: #161616;
+        }
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #6f6f6f;
+            margin-top: 4px;
+        }
+        .stat-card.highlight {
+            background: #f0f0f0;
+            border-color: #161616;
+        }
+
+        /* ===== Cards ===== */
+        .cds--card-custom {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            background: #fafafa;
+            transition: border-color 0.2s;
+        }
+        .cds--card-custom:hover {
+            border-color: #b0b0b0;
+        }
+        .cds--card-custom .cds--card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #161616;
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 2px 14px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        /* ===== Word Cloud ===== */
+        .word-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        .word-cloud .word {
+            padding: 4px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            background: #f5f5f5;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .word-cloud .word:hover {
+            background: #e8e8e8;
+            transform: scale(1.04);
+        }
+        .word-cloud .word .count {
+            font-weight: 600;
+            color: #6f6f6f;
+            margin-right: 4px;
+        }
+        .word-cloud .word.large {
+            font-size: 20px;
+            padding: 6px 20px;
+        }
+        .word-cloud .word.medium {
+            font-size: 15px;
+        }
+        .word-cloud .word.small {
+            font-size: 11px;
+        }
+
+        /* ===== Progress ===== */
+        .progress-bar {
+            height: 6px;
+            background: #e8e8e8;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: #161616;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        /* ===== Table ===== */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .result-table th,
+        .result-table td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 8px;
+            text-align: center;
+        }
+        .result-table th {
+            background: #e8e8e8;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .result-table .user-row {
+            background: #fafafa;
+            transition: background 0.2s;
+        }
+        .result-table .user-row:nth-child(even) {
+            background: #f5f5f5;
+        }
+        .result-table .user-row:hover {
+            background: #ececec;
+        }
+
+        /* ===== Verdict Box ===== */
+        .verdict-box {
+            border: 3px solid #6f6f6f;
+            border-radius: 6px;
+            padding: 14px 18px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: #f5f5f5;
+            margin-top: 10px;
+            color: #161616;
+        }
+
+        /* ===== Toast ===== */
+        .cds--toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #161616;
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.4s, transform 0.3s;
+            pointer-events: none;
+            max-width: 92%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateX(-50%) translateY(10px);
+        }
+        .cds--toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+        .cds--toast.success {
+            background: #2a6a2a;
+        }
+        .cds--toast.error {
+            background: #aa3333;
+        }
+        .cds--toast.info {
+            background: #005d8f;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .admin-container {
+                padding: 16px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .admin-actions {
+                gap: 6px;
+            }
+            .admin-actions .cds--btn {
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+            .result-table {
+                font-size: 10px;
+            }
+            .result-table th,
+            .result-table td {
+                padding: 4px 4px;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 10px;
+            }
+            .admin-container {
+                box-shadow: none;
+                border-color: #aaa;
+            }
+            .admin-actions {
+                display: none;
+            }
+            .cds--btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- ADMIN DASHBOARD -->
+    <!-- ============================================================ -->
+    <div class="admin-container" id="adminApp">
+
+        <div class="admin-header">
+            <h2>📈 داشبورد مدیریت · داده‌های تجمیعی</h2>
+            <div class="sub">مشاهده و تحلیل داده‌های همه کاربران به صورت تجمیعی</div>
+        </div>
+
+        <div class="admin-actions">
+            <button class="cds--btn cds--btn--primary" onclick="fetchAllData()">
+                📥 دریافت همه داده‌ها از سرور
+            </button>
+            <button class="cds--btn cds--btn--success" onclick="exportToExcel()" id="exportExcelBtn" disabled>
+                📊 دانلود اکسل (XLSX)
+            </button>
+            <button class="cds--btn cds--btn--ghost" onclick="copyAdminResult()">
+                📋 کپی خروجی
+            </button>
+            <button class="cds--btn cds--btn--ghost" onclick="window.print()">
+                🖨️ چاپ گزارش
+            </button>
+            <button class="cds--btn cds--btn--danger" onclick="clearAdminData()">
+                🗑️ پاک کردن داده‌ها
+            </button>
+        </div>
+
+        <div id="adminResult">
+            <div class="cds--card-custom" style="text-align:center; padding:50px;">
+                <p style="color:#6f6f6f; font-size:16px;">
+                    برای مشاهده داده‌های تجمیعی، دکمه
+                    <strong>«دریافت همه داده‌ها از سرور»</strong>
+                    را بزنید.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top:20px; text-align:center; font-size:12px; border-top:2px solid #e8e8e8; padding-top:14px; color:#6f6f6f;">
+            تمام داده‌ها از سرور JSONBin دریافت می‌شوند · آخرین بروزرسانی: <span id="lastUpdate">—</span>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="cds--toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const JSONBIN_CONFIG = {
+            API_KEY: '$2a$10$rbwhaXJddbnhyQNXNFTi6ORbUGXnTDSOdGfDdhx..oJpsh.2M5sL6',
+            BIN_ID: null
+        };
+
+        let allUsersData = [];
+        let isDataLoaded = false;
+
+        // ============================================================
+        // JSONBin Functions
+        // ============================================================
+        async function fetchAllData() {
+            const container = document.getElementById('adminResult');
+            const btn = event?.target || document.querySelector('.admin-actions .cds--btn--primary');
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> در حال دریافت...';
+            btn.disabled = true;
+
+            container.innerHTML = `
+                <div class="cds--card-custom" style="text-align:center; padding:50px;">
+                    <p style="color:#6f6f6f;">⏳ در حال دریافت داده‌ها از سرور...</p>
+                </div>
+            `;
+
+            try {
+                const binId = localStorage.getItem('jsonbin_id');
+                if (!binId) {
+                    container.innerHTML = `
+                        <div class="cds--card-custom" style="text-align:center; padding:40px;">
+                            <p style="color:#6f6f6f; font-size:16px;">
+                                ⚠️ هنوز داده‌ای در سرور وجود ندارد.
+                            </p>
+                            <p style="color:#6f6f6f; font-size:13px; margin-top:8px;">
+                                از کاربران بخواهید مراحل را ارسال کنند.
+                            </p>
+                        </div>
+                    `;
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                    headers: { 'X-Master-Key': JSONBIN_CONFIG.API_KEY }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch data: ' + response.status);
+
+                const result = await response.json();
+                const data = result.record || { users: [] };
+                allUsersData = data.users || [];
+                isDataLoaded = true;
+
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleString('fa-IR');
+                document.getElementById('exportExcelBtn').disabled = false;
+
+                renderAdminDashboard(allUsersData);
+
+            } catch (error) {
+                console.error('❌ Fetch Error:', error);
+                container.innerHTML = `
+                    <div class="cds--card-custom" style="border-color:#aa3333; text-align:center; padding:40px;">
+                        <p style="color:#aa3333; font-size:16px;">
+                            ⚠️ خطا در دریافت داده‌ها
+                        </p>
+                        <p style="color:#6f6f6f; font-size:13px; margin-top:8px;">
+                            ${error.message}
+                        </p>
+                    </div>
+                `;
+                showToast('⚠️ خطا در دریافت داده‌ها', 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================================
+        // RENDER ADMIN DASHBOARD
+        // ============================================================
+        function renderAdminDashboard(data) {
+            const container = document.getElementById('adminResult');
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `
+                    <div class="cds--card-custom" style="text-align:center; padding:40px;">
+                        <p style="color:#6f6f6f; font-size:16px;">
+                            📭 هیچ داده‌ای در سرور وجود ندارد.
+                        </p>
+                        <p style="color:#6f6f6f; font-size:13px; margin-top:8px;">
+                            از کاربران بخواهید مراحل را ارسال کنند.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            const totalUsers = data.length;
+
+            // ===== جمع‌آوری آمار =====
+            let completedSteps = {};
+            let allVerdicts = [];
+            let allCars = [];
+            let allIdentified = [];
+            let allMatches = [];
+            let allWords = [];
+            let allPurposes = [];
+            let allPains = [];
+            let allStatements = [];
+
+            const positionCounts = {
+                q1: { A: 0, B: 0 },
+                q2: { A: 0, B: 0 },
+                q3: { A: 0, B: 0 },
+                q4: { A: 0, B: 0 }
+            };
+
+            const colorCounts = {};
+
+            for (const user of data) {
+                const steps = user.allData || {};
+                const stepKeys = Object.keys(steps).filter(k => k !== '_userName' && k !== '_timestamp' && k !== '_step');
+                completedSteps[stepKeys.length] = (completedSteps[stepKeys.length] || 0) + 1;
+
+                // مرحله ۱
+                const step1 = steps[1] || {};
+                if (step1.purpose) allPurposes.push(step1.purpose);
+                if (step1.pain) allPains.push(step1.pain);
+                if (step1.s1 && step1.s2 && step1.s3 && step1.s4 && step1.s5) {
+                    allStatements.push(`${step1.s1}، ${step1.s2}، ${step1.s3}، ${step1.s4}، ${step1.s5}`);
+                }
+                for (let i = 1; i <= 5; i++) {
+                    const word = step1['word' + i];
+                    if (word && word.trim()) allWords.push(word.trim());
+                }
+
+                // مرحله ۲ (با اسلایدر)
+                const step2 = steps[2] || {};
+                if (step2.q1 !== undefined) {
+                    const val = parseInt(step2.q1) || 50;
+                    positionCounts.q1.A += val;
+                    positionCounts.q1.B += (100 - val);
+                }
+                if (step2.q2 !== undefined) {
+                    const val = parseInt(step2.q2) || 50;
+                    positionCounts.q2.A += val;
+                    positionCounts.q2.B += (100 - val);
+                }
+                if (step2.q3 !== undefined) {
+                    const val = parseInt(step2.q3) || 50;
+                    positionCounts.q3.A += val;
+                    positionCounts.q3.B += (100 - val);
+                }
+                if (step2.q4 !== undefined) {
+                    const val = parseInt(step2.q4) || 50;
+                    positionCounts.q4.A += val;
+                    positionCounts.q4.B += (100 - val);
+                }
+
+                // مرحله ۴ (رنگ‌ها)
+                const step4 = steps[4] || {};
+                for (let i = 1; i <= 5; i++) {
+                    const color = step4['color' + i];
+                    if (color && color.trim()) {
+                        colorCounts[color.trim()] = (colorCounts[color.trim()] || 0) + 1;
+                    }
+                }
+
+                // مرحله ۵
+                const step5 = steps[5] || {};
+                if (step5.verdict) allVerdicts.push(step5.verdict);
+                if (step5.car) allCars.push(step5.car);
+                if (step5.identified) allIdentified.push(parseInt(step5.identified) || 0);
+                if (step5.match) allMatches.push(step5.match);
+            }
+
+            // ===== محاسبات =====
+            const avgIdentified = allIdentified.length > 0 ?
+                (allIdentified.reduce((a, b) => a + b, 0) / allIdentified.length).toFixed(1) :
+                'N/A';
+
+            const verdictCounts = {};
+            for (const v of allVerdicts) verdictCounts[v] = (verdictCounts[v] || 0) + 1;
+
+            const carCounts = {};
+            for (const c of allCars) { if (c) carCounts[c] = (carCounts[c] || 0) + 1; }
+            const topCar = Object.entries(carCounts).sort((a, b) => b[1] - a[1])[0];
+
+            const matchCounts = {};
+            for (const m of allMatches) { if (m) matchCounts[m] = (matchCounts[m] || 0) + 1; }
+
+            const wordCounts = {};
+            for (const w of allWords) {
+                wordCounts[w] = (wordCounts[w] || 0) + 1;
+            }
+            const topWords = Object.entries(wordCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+
+            const topColors = Object.entries(colorCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+
+            // موقعیت‌یابی - تبدیل به درصد
+            const posTotal = totalUsers || 1;
+            const posData = {
+                q1: { A: Math.round(positionCounts.q1.A / posTotal), B: Math.round(positionCounts.q1.B / posTotal) },
+                q2: { A: Math.round(positionCounts.q2.A / posTotal), B: Math.round(positionCounts.q2.B / posTotal) },
+                q3: { A: Math.round(positionCounts.q3.A / posTotal), B: Math.round(positionCounts.q3.B / posTotal) },
+                q4: { A: Math.round(positionCounts.q4.A / posTotal), B: Math.round(positionCounts.q4.B / posTotal) }
+            };
+
+            // ===== ساخت HTML =====
+            let html = '';
+
+            // آمار کلی
+            html += `
+                <div class="stats-grid">
+                    <div class="stat-card highlight">
+                        <div class="number">${totalUsers}</div>
+                        <div class="stat-label">👥 تعداد کاربران</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${avgIdentified}</div>
+                        <div class="stat-label">🎯 میانگین تشخیص (از ۵)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${topCar ? topCar[0] : 'N/A'}</div>
+                        <div class="stat-label">🚗 پر تکرارترین خودرو</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${Object.keys(verdictCounts).length > 0 ? 
+                            Object.entries(verdictCounts).map(([v,c]) => `${v}: ${c}`).join(' / ') : 
+                            'N/A'}</div>
+                        <div class="stat-label">✅ تصمیم نهایی</div>
+                    </div>
+                </div>
+            `;
+
+            // کلمات هسته‌ای
+            html += `
+                <div class="cds--card-custom">
+                    <div class="cds--card-title">📌 کلمات هسته‌ای (ابر کلمات)</div>
+                    <div class="word-cloud">
+                        ${topWords.length > 0 ? topWords.map(([word, count]) => {
+                            let size = 'small';
+                            if (count > 3) size = 'large';
+                            else if (count > 1) size = 'medium';
+                            return `<span class="word ${size}">${word} <span class="count">(${count})</span></span>`;
+                        }).join('') : '<p style="color:#6f6f6f;">هنوز کلمه‌ای ثبت نشده است.</p>'}
+                    </div>
+                </div>
+            `;
+
+            // موقعیت‌یابی
+            html += `
+                <div class="cds--card-custom">
+                    <div class="cds--card-title">📍 موقعیت‌یابی (نظر جمعی)</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        ${Object.entries(posData).map(([key, counts]) => {
+                            const labels = {
+                                q1: { a: 'پیشگام', b: 'پایدار', title: 'ریسک‌پذیری' },
+                                q2: { a: 'سخت‌افزار', b: 'نرم‌افزار', title: 'معماری' },
+                                q3: { a: 'استارتاپ', b: 'سازمان', title: 'مخاطب' },
+                                q4: { a: 'مستندات', b: 'جامعه', title: 'پشتیبانی' }
+                            };
+                            const label = labels[key];
+                            return `
+                                <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px 14px; background:#fafafa;">
+                                    <strong>${label.title}</strong>
+                                    <div style="margin-top:6px;">
+                                        <div style="display:flex; justify-content:space-between; font-size:12px;">
+                                            <span>${label.a}</span>
+                                            <span>${counts.A}%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="fill" style="width:${counts.A}%;"></div>
+                                        </div>
+                                        <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:4px;">
+                                            <span>${label.b}</span>
+                                            <span>${counts.B}%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="fill" style="width:${counts.B}%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            // رنگ‌ها
+            html += `
+                <div class="cds--card-custom">
+                    <div class="cds--card-title">🎨 رنگ‌های پرتکرار</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        ${topColors.length > 0 ? topColors.map(([color, count]) => `
+                            <span style="border:1px solid #e0e0e0; border-radius:20px; padding:4px 16px; font-size:${12 + count}px; background:#f5f5f5; transition:all 0.2s;">
+                                ${color} <span style="font-weight:600; color:#6f6f6f;">(${count})</span>
+                            </span>
+                        `).join('') : '<p style="color:#6f6f6f;">هنوز رنگی ثبت نشده است.</p>'}
+                    </div>
+                </div>
+            `;
+
+            // اعتبارسنجی
+            html += `
+                <div class="cds--card-custom">
+                    <div class="cds--card-title">✅ اعتبارسنجی</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                        <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px 14px; background:#fafafa;">
+                            <strong>تصمیم نهایی</strong>
+                            ${Object.entries(verdictCounts).length > 0 ? 
+                                Object.entries(verdictCounts).map(([v,c]) => `
+                                    <div style="margin-top:6px;">
+                                        ${v === 'تأیید' ? '✅' : '🔄'} ${v}: ${c} نفر (${Math.round(c/totalUsers*100)}%)
+                                        <div class="progress-bar">
+                                            <div class="fill" style="width:${Math.round(c/totalUsers*100)}%;"></div>
+                                        </div>
+                                    </div>
+                                `).join('') : 
+                                '<p style="color:#6f6f6f; margin-top:4px;">هنوز تصمیمی ثبت نشده است.</p>'}
+                        </div>
+                        <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px 14px; background:#fafafa;">
+                            <strong>همخوانی با تیم</strong>
+                            ${Object.entries(matchCounts).length > 0 ? 
+                                Object.entries(matchCounts).map(([m,c]) => `
+                                    <div style="margin-top:6px;">
+                                        ${m}: ${c} نفر (${Math.round(c/totalUsers*100)}%)
+                                        <div class="progress-bar">
+                                            <div class="fill" style="width:${Math.round(c/totalUsers*100)}%;"></div>
+                                        </div>
+                                    </div>
+                                `).join('') : 
+                                '<p style="color:#6f6f6f; margin-top:4px;">هنوز نظری ثبت نشده است.</p>'}
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; padding-top:12px; border-top:1px solid #e8e8e8;">
+                        <strong>🚗 پر تکرارترین خودرو:</strong> ${topCar ? `${topCar[0]} (${topCar[1]} بار)` : 'هنوز ثبت نشده'}
+                        &nbsp;|&nbsp; <strong>🎯 میانگین تشخیص:</strong> ${avgIdentified} از ۵
+                    </div>
+                </div>
+            `;
+
+            // جدول کاربران
+            html += `
+                <div class="cds--card-custom">
+                    <div class="cds--card-title">📋 جزئیات کاربران</div>
+                    <div style="overflow-x:auto;">
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>کاربر</th>
+                                    <th>مراحل</th>
+                                    <th>موقعیت (Q1/Q2/Q3/Q4)</th>
+                                    <th>تصمیم</th>
+                                    <th>خودرو</th>
+                                    <th>تشخیص</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+            data.forEach((user, idx) => {
+                const steps = user.allData || {};
+                const step2 = steps[2] || {};
+                const step5 = steps[5] || {};
+                const stepCount = Object.keys(steps).filter(k => k !== '_userName' && k !== '_timestamp' && k !==
+                    '_step').length;
+
+                const q1 = step2.q1 !== undefined ? step2.q1 + '%' : '-';
+                const q2 = step2.q2 !== undefined ? step2.q2 + '%' : '-';
+                const q3 = step2.q3 !== undefined ? step2.q3 + '%' : '-';
+                const q4 = step2.q4 !== undefined ? step2.q4 + '%' : '-';
+
+                html += `
+                        <tr class="user-row">
+                            <td>${idx + 1}</td>
+                            <td><strong>${user.userName || 'ناشناس'}</strong></td>
+                            <td>${stepCount}/۶</td>
+                            <td>${q1}/${q2}/${q3}/${q4}</td>
+                            <td>${step5.verdict ? (step5.verdict === 'تأیید' ? '✅ تأیید' : '🔄 بازنگری') : '-'}</td>
+                            <td>${step5.car || '-'}</td>
+                            <td>${step5.identified || '-'}</td>
+                        </tr>
+                    `;
+            });
+
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // خروجی کلی
+            const totalVerified = verdictCounts['تأیید'] || 0;
+            const verdictPercent = totalUsers > 0 ? Math.round(totalVerified / totalUsers * 100) : 0;
+
+            html += `
+                <div class="cds--card-custom" style="border:3px solid #161616; background:#f5f5f5;">
+                    <div class="cds--card-title">🎯 خروجی کلی نهایی</div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px; background:#ffffff; text-align:center;">
+                            <div style="font-size:28px; font-weight:700; color:#161616;">${totalUsers}</div>
+                            <div style="font-size:12px; color:#6f6f6f;">👥 تعداد کاربران</div>
+                        </div>
+                        <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px; background:#ffffff; text-align:center;">
+                            <div style="font-size:28px; font-weight:700; color:#161616;">${avgIdentified}</div>
+                            <div style="font-size:12px; color:#6f6f6f;">🎯 میانگین تشخیص</div>
+                        </div>
+                        <div style="border:1px solid #e0e0e0; border-radius:4px; padding:12px; background:#ffffff; text-align:center;">
+                            <div style="font-size:28px; font-weight:700; color:#161616;">${verdictPercent}%</div>
+                            <div style="font-size:12px; color:#6f6f6f;">✅ تأیید برند</div>
+                        </div>
+                    </div>
+
+                    <div style="border-top:2px solid #e0e0e0; padding-top:12px;">
+                        <div class="verdict-box">
+                            ${Object.entries(verdictCounts).length > 0 ? 
+                                Object.entries(verdictCounts).map(([v, c]) => 
+                                    `${v === 'تأیید' ? '✅' : '🔄'} ${v}: ${c} نفر (${Math.round(c/totalUsers*100)}%)`
+                                ).join(' &nbsp;|&nbsp; ') : 
+                                'هنوز تصمیمی ثبت نشده است'
+                            }
+                        </div>
+                        <div style="margin-top:8px; text-align:center; font-size:14px; color:#525252;">
+                            ${topCar ? `🚗 پر تکرارترین خودرو: <strong>${topCar[0]}</strong> (${topCar[1]} بار)` : ''}
+                            ${topColors.length > 0 ? ` &nbsp;|&nbsp; 🎨 پر تکرارترین رنگ: <strong>${topColors[0][0]}</strong> (${topColors[0][1]} بار)` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            showToast(`✅ ${totalUsers} کاربر دریافت شد!`, 'success');
+        }
+
+        // ============================================================
+        // EXPORT TO EXCEL
+        // ============================================================
+        function exportToExcel() {
+            if (!isDataLoaded || allUsersData.length === 0) {
+                showToast('⚠️ ابتدا داده‌ها را دریافت کنید!', 'error');
+                return;
+            }
+
+            try {
+                const rows = [];
+
+                // هدر
+                rows.push([
+                    'کاربر',
+                    'مراحل تکمیل‌شده',
+                    'Q1 (ریسک‌پذیری)',
+                    'Q2 (معماری)',
+                    'Q3 (مخاطب)',
+                    'Q4 (پشتیبانی)',
+                    'تصمیم نهایی',
+                    'خودرو',
+                    'تشخیص (از ۵)',
+                    'همخوانی با تیم',
+                    'Purpose',
+                    'درد کاربر',
+                    'کلمات هسته‌ای',
+                    'رنگ‌ها',
+                    'تاریخ ارسال'
+                ]);
+
+                // داده‌ها
+                for (const user of allUsersData) {
+                    const steps = user.allData || {};
+                    const step1 = steps[1] || {};
+                    const step2 = steps[2] || {};
+                    const step4 = steps[4] || {};
+                    const step5 = steps[5] || {};
+                    const stepCount = Object.keys(steps).filter(k => k !== '_userName' && k !== '_timestamp' && k !==
+                        '_step').length;
+
+                    const colors = [];
+                    for (let i = 1; i <= 5; i++) {
+                        if (step4['color' + i]) colors.push(step4['color' + i]);
+                    }
+
+                    const words = [];
+                    for (let i = 1; i <= 5; i++) {
+                        if (step1['word' + i]) words.push(step1['word' + i]);
+                    }
+
+                    rows.push([
+                        user.userName || 'ناشناس',
+                        stepCount + '/۶',
+                        step2.q1 !== undefined ? step2.q1 + '%' : '-',
+                        step2.q2 !== undefined ? step2.q2 + '%' : '-',
+                        step2.q3 !== undefined ? step2.q3 + '%' : '-',
+                        step2.q4 !== undefined ? step2.q4 + '%' : '-',
+                        step5.verdict || '-',
+                        step5.car || '-',
+                        step5.identified || '-',
+                        step5.match || '-',
+                        step1.purpose || '-',
+                        step1.pain || '-',
+                        words.join('، ') || '-',
+                        colors.join('، ') || '-',
+                        user.timestamp ? new Date(user.timestamp).toLocaleString('fa-IR') : '-'
+                    ]);
+                }
+
+                // ایجاد کتاب کار
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+
+                // تنظیم عرض ستون‌ها
+                ws['!cols'] = [
+                    { wch: 18 }, { wch: 14 }, { wch: 18 }, { wch: 18 },
+                    { wch: 18 }, { wch: 18 }, { wch: 16 }, { wch: 18 },
+                    { wch: 14 }, { wch: 18 }, { wch: 30 }, { wch: 30 },
+                    { wch: 30 }, { wch: 30 }, { wch: 22 }
+                ];
+
+                XLSX.utils.book_append_sheet(wb, ws, 'برندینگ');
+
+                // دانلود
+                const fileName = `branding_report_${new Date().toISOString().slice(0,10)}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+                showToast('📊 فایل اکسل با موفقیت دانلود شد!', 'success');
+
+            } catch (error) {
+                console.error('❌ Excel Export Error:', error);
+                showToast('⚠️ خطا در ایجاد فایل اکسل: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // COPY ADMIN RESULT
+        // ============================================================
+        function copyAdminResult() {
+            if (!isDataLoaded || allUsersData.length === 0) {
+                showToast('⚠️ ابتدا داده‌ها را دریافت کنید!', 'error');
+                return;
+            }
+            const text = JSON.stringify(allUsersData, null, 2);
+            copyToClipboard(text);
+            showToast('📋 خروجی کلی در کلیپ‌بورد کپی شد!', 'success');
+        }
+
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        // ============================================================
+        // CLEAR ADMIN DATA
+        // ============================================================
+        function clearAdminData() {
+            if (!confirm('⚠️ آیا مطمئن هستید که می‌خواهید همه داده‌های سرور را پاک کنید؟')) return;
+
+            const binId = localStorage.getItem('jsonbin_id');
+            if (binId) {
+                fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Master-Key': JSONBIN_CONFIG.API_KEY }
+                }).then(() => {
+                    localStorage.removeItem('jsonbin_id');
+                    JSONBIN_CONFIG.BIN_ID = null;
+                    allUsersData = [];
+                    isDataLoaded = false;
+                    document.getElementById('exportExcelBtn').disabled = true;
+                    document.getElementById('adminResult').innerHTML = `
+                        <div class="cds--card-custom" style="text-align:center; padding:40px;">
+                            <p style="color:#6f6f6f; font-size:16px;">✅ همه داده‌ها پاک شدند.</p>
+                        </div>
+                    `;
+                    showToast('🗑️ داده‌ها پاک شدند!', 'success');
+                }).catch(err => {
+                    showToast('⚠️ خطا در پاک کردن: ' + err.message, 'error');
+                });
+            } else {
+                showToast('⚠️ هیچ داده‌ای برای پاک کردن وجود ندارد.', 'info');
+            }
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'cds--toast show ' + type;
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        const savedBinId = localStorage.getItem('jsonbin_id');
+        if (savedBinId) {
+            JSONBIN_CONFIG.BIN_ID = savedBinId;
+        }
+
+        // اگر قبلاً داده‌ای در LocalStorage بود، نمایش بده
+        if (savedBinId) {
+            document.getElementById('lastUpdate').textContent = 'بارگذاری خودکار...';
+            // می‌توانید به صورت خودکار داده‌ها را دریافت کنید
+            // fetchAllData();
+        }
+
+        console.log('✅ صفحه مدیریت بارگذاری شد!');
+        console.log('📦 JSONBin Config:', JSONBIN_CONFIG);
+    </script>
+
+</body>
+</html>
