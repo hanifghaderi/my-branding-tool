@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برندینگ · ۷ مرحله</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="https://cdn.emailjs.com/dist/email.min.js">
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            padding: 20px;
+            direction: rtl;
+        }
+        .app {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #d4d4d4;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e5e5e5;
+            padding-bottom: 16px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .header .user-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
+            color: #3a3a3a;
+            flex-wrap: wrap;
+        }
+        .header .user-info input {
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            background: #fafafa;
+            color: #1a1a1a;
+            width: 160px;
+        }
+        .header .user-info input:focus {
+            outline: 2px solid #b0b0b0;
+            border-color: transparent;
+        }
+        .nav {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 14px;
+        }
+        .nav button {
+            font-family: 'Vazirmatn', sans-serif;
+            padding: 8px 14px;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #3a3a3a;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav button:hover {
+            background: #e5e5e5;
+        }
+        .nav button.active {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+        .nav button.saved {
+            border-color: #2a7a2a;
+            background: #e8f5e8;
+        }
+        .nav button.saved::after {
+            content: " ✓";
+            color: #2a7a2a;
+            font-weight: 700;
+        }
+        .page {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section {
+            border: 1px solid #d4d4d4;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            background: #fafafa;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: #e5e5e5;
+            color: #1a1a1a;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        .instruction-box {
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 12px 14px;
+            background: #f5f5f5;
+            font-size: 13px;
+            line-height: 1.9;
+            margin-bottom: 14px;
+            color: #1a1a1a;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .field label {
+            font-weight: 700;
+            font-size: 13px;
+            color: #3a3a3a;
+        }
+        .field input,
+        .field textarea,
+        .field select {
+            font-family: 'Vazirmatn', sans-serif;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            background: #ffffff;
+            color: #1a1a1a;
+            width: 100%;
+            resize: vertical;
+        }
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            outline: 2px solid #b0b0b0;
+            border-color: transparent;
+        }
+        .field textarea {
+            min-height: 50px;
+        }
+        .field textarea.lg {
+            min-height: 80px;
+        }
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .row-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        .choice-group {
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 12px;
+            background: #fafafa;
+        }
+        .choice-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px dashed #e5e5e5;
+            font-size: 13px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .choice-row:last-child {
+            border-bottom: none;
+        }
+        .choice-row .vs {
+            font-weight: 700;
+            color: #5a5a5a;
+            font-size: 12px;
+        }
+        .choice-row label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .choice-row input[type="radio"] {
+            accent-color: #1a1a1a;
+            width: 16px;
+            height: 16px;
+        }
+        .btn {
+            font-family: 'Vazirmatn', sans-serif;
+            padding: 10px 24px;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            background: #fafafa;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: #e5e5e5;
+        }
+        .btn-primary {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+        .btn-primary:hover {
+            background: #3a3a3a;
+            border-color: #3a3a3a;
+        }
+        .btn-success {
+            background: #2a6a2a;
+            color: #ffffff;
+            border-color: #2a6a2a;
+        }
+        .btn-success:hover {
+            background: #1a5a1a;
+            border-color: #1a5a1a;
+        }
+        .btn-danger {
+            background: #aa3333;
+            color: #ffffff;
+            border-color: #aa3333;
+        }
+        .btn-danger:hover {
+            background: #8a2222;
+            border-color: #8a2222;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #e5e5e5;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            max-width: 90%;
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast.success {
+            background: #2a6a2a;
+        }
+        .toast.error {
+            background: #aa3333;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .dashboard-card {
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 14px;
+            background: #fafafa;
+        }
+        .dashboard-card .label {
+            font-weight: 700;
+            font-size: 12px;
+            color: #5a5a5a;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .dashboard-card .value {
+            font-size: 14px;
+            color: #1a1a1a;
+            word-break: break-word;
+        }
+        .verdict-box {
+            border: 3px solid #6a6a6a;
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: #f5f5f5;
+            margin-top: 10px;
+            color: #1a1a1a;
+        }
+        .footer-text {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            border-top: 2px solid #e5e5e5;
+            padding-top: 14px;
+            color: #6a6a6a;
+        }
+        .upload-area {
+            border: 2px dashed #d4d4d4;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 16px 0;
+            background: #fafafa;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            background: #f0f0f0;
+        }
+        .upload-area input[type="file"] {
+            display: none;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+        .result-table th,
+        .result-table td {
+            border: 1px solid #d4d4d4;
+            padding: 8px 6px;
+            text-align: center;
+        }
+        .result-table th {
+            background: #e5e5e5;
+            font-weight: 700;
+            font-size: 11px;
+        }
+        .result-table .user-row {
+            background: #fafafa;
+        }
+        .result-table .user-row:nth-child(even) {
+            background: #f5f5f5;
+        }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .stat-card {
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #5a5a5a;
+        }
+        @media (max-width: 700px) {
+            .app {
+                padding: 16px;
+            }
+            .row-2,
+            .row-5 {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header .user-info input {
+                width: 100%;
+            }
+            .nav {
+                gap: 4px;
+            }
+            .nav button {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+        }
+        @media print {
+            body {
+                background: #fff;
+                padding: 10px;
+            }
+            .app {
+                box-shadow: none;
+                border-color: #aaa;
+            }
+            .nav {
+                display: none;
+            }
+            .btn-group {
+                display: none;
+            }
+            .page {
+                display: block !important;
+            }
+            .page:not(.active) {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app" id="app">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧩 برندینگ · ۷ مرحله</h1>
+            <div class="user-info">
+                <span>👤 نام:</span>
+                <input type="text" id="userName" placeholder="نام خود را وارد کنید" onchange="saveUser()">
+                <span style="font-size:11px; color:#8a8a8a;" id="saveStatus">ذخیره‌شده</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav" id="nav">
+            <button class="active" data-page="page1">۱. هسته</button>
+            <button data-page="page2">۲. موقعیت</button>
+            <button data-page="page3">۳. لحن</button>
+            <button data-page="page4">۴. بصری</button>
+            <button data-page="page5">۵. اعتبارسنجی</button>
+            <button data-page="page6">۶. پرسشنامه</button>
+            <button data-page="page7">📊 داشبورد</button>
+        </div>
+
+        <!-- ==================== PAGE 1 ==================== -->
+        <div class="page active" id="page1">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۱ · بیانیه هسته‌ای</h2>
+            <div class="section">
+                <div class="section-title">دلیل هستی (Purpose)</div>
+                <div class="field">
+                    <label>چرا وجود داریم؟</label>
+                    <textarea class="lg" id="p1_purpose" placeholder="دلیل اصلی وجود شرکت را بنویسید..."></textarea>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">۵ کلمه هسته‌ای</div>
+                <div class="row-5">
+                    <div class="field"><label>۱</label><input id="p1_word1" placeholder="کلمه"></div>
+                    <div class="field"><label>۲</label><input id="p1_word2" placeholder="کلمه"></div>
+                    <div class="field"><label>۳</label><input id="p1_word3" placeholder="کلمه"></div>
+                    <div class="field"><label>۴</label><input id="p1_word4" placeholder="کلمه"></div>
+                    <div class="field"><label>۵</label><input id="p1_word5" placeholder="کلمه"></div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">درد اصلی کاربر</div>
+                <div class="field">
+                    <label>کاربر چه دردی دارد؟ (یک جمله)</label>
+                    <textarea class="lg" id="p1_pain" placeholder="درد اصلی کاربر را بنویسید..."></textarea>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">بیانیه یک‌خطه برند</div>
+                <div class="field">
+                    <label>ما [____] هستیم، [____] را برای [____] فراهم می‌کنیم تا [____]، به‌طوری‌که [____].</label>
+                    <div class="row-2">
+                        <input id="p1_s1" placeholder="بخش ۱">
+                        <input id="p1_s2" placeholder="بخش ۲">
+                        <input id="p1_s3" placeholder="بخش ۳">
+                        <input id="p1_s4" placeholder="بخش ۴">
+                        <input id="p1_s5" placeholder="بخش ۵" style="grid-column:1/-1;">
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="saveAndEmail(1)">💾 ذخیره و ارسال مرحله ۱</button>
+                <button class="btn btn-primary" onclick="goToPage(2)">بعدی →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 2 ==================== -->
+        <div class="page" id="page2">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۲ · ماتریس موقعیت‌یابی</h2>
+            <div class="instruction-box">
+                در هر ردیف، گزینه‌ای که بیشتر با شرکت ما همخوانی دارد را انتخاب کنید.
+            </div>
+            <div class="section">
+                <div class="section-title">دوگانگی‌های استراتژیک</div>
+                <div class="choice-group">
+                    <div class="choice-row">
+                        <span>ریسک‌پذیری</span>
+                        <label><input type="radio" name="p2_q1" value="پیشگام"> پیشگام و ریسک‌پذیر</label>
+                        <span class="vs">در مقابل</span>
+                        <label><input type="radio" name="p2_q1" value="پایدار"> پایدار و باگ‌صفر</label>
+                    </div>
+                    <div class="choice-row">
+                        <span>معماری</span>
+                        <label><input type="radio" name="p2_q2" value="سخت‌افزار"> سخت‌افزارمحور (Edge)</label>
+                        <span class="vs">در مقابل</span>
+                        <label><input type="radio" name="p2_q2" value="نرم‌افزار"> نرم‌افزار-اول (Cloud)</label>
+                    </div>
+                    <div class="choice-row">
+                        <span>مخاطب</span>
+                        <label><input type="radio" name="p2_q3" value="استارتاپ"> استارتاپ‌ها</label>
+                        <span class="vs">در مقابل</span>
+                        <label><input type="radio" name="p2_q3" value="سازمان"> سازمان‌های بزرگ</label>
+                    </div>
+                    <div class="choice-row">
+                        <span>پشتیبانی</span>
+                        <label><input type="radio" name="p2_q4" value="مستندات"> مستندات کامل</label>
+                        <span class="vs">در مقابل</span>
+                        <label><input type="radio" name="p2_q4" value="جامعه"> کدباز و جامعه‌محور</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(1)">← قبلی</button>
+                <button class="btn btn-success" onclick="saveAndEmail(2)">💾 ذخیره و ارسال مرحله ۲</button>
+                <button class="btn btn-primary" onclick="goToPage(3)">بعدی →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 3 ==================== -->
+        <div class="page" id="page3">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۳ · راهنمای لحن (Tone Map)</h2>
+            <div class="instruction-box">
+                برای هر موقعیت، لحن مناسب و یک مثال بنویسید.
+            </div>
+            <div class="section">
+                <div class="section-title">ماتریس لحن</div>
+                <div class="field"><label>مستندات فنی / خطا (لحن)</label><input id="p3_tone1" placeholder="مثل: دقیق، گام‌به‌گام"></div>
+                <div class="field"><label>مثال تأییدشده</label><input id="p3_ex1" placeholder="مثال..."></div>
+                <div class="field"><label>مثال ممنوع</label><input id="p3_forbid1" placeholder="مثال ممنوع..."></div>
+                <hr style="border-color:#e5e5e5; margin:12px 0;">
+                <div class="field"><label>شبکه‌های اجتماعی (لحن)</label><input id="p3_tone2" placeholder="مثل: جسور، الهام‌بخش"></div>
+                <div class="field"><label>مثال تأییدشده</label><input id="p3_ex2" placeholder="مثال..."></div>
+                <div class="field"><label>مثال ممنوع</label><input id="p3_forbid2" placeholder="مثال ممنوع..."></div>
+                <hr style="border-color:#e5e5e5; margin:12px 0;">
+                <div class="field"><label>پشتیبانی / بحران (لحن)</label><input id="p3_tone3" placeholder="مثل: همدلانه، شفاف"></div>
+                <div class="field"><label>مثال تأییدشده</label><input id="p3_ex3" placeholder="مثال..."></div>
+                <div class="field"><label>مثال ممنوع</label><input id="p3_forbid3" placeholder="مثال ممنوع..."></div>
+                <hr style="border-color:#e5e5e5; margin:12px 0;">
+                <div class="field"><label>ارائه به سرمایه‌گذار (لحن)</label><input id="p3_tone4" placeholder="مثل: آماری، مقتدر"></div>
+                <div class="field"><label>مثال تأییدشده</label><input id="p3_ex4" placeholder="مثال..."></div>
+                <div class="field"><label>مثال ممنوع</label><input id="p3_forbid4" placeholder="مثال ممنوع..."></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(2)">← قبلی</button>
+                <button class="btn btn-success" onclick="saveAndEmail(3)">💾 ذخیره و ارسال مرحله ۳</button>
+                <button class="btn btn-primary" onclick="goToPage(4)">بعدی →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 4 ==================== -->
+        <div class="page" id="page4">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۴ · مودی‌بورد دیجیتال</h2>
+            <div class="instruction-box">
+                ۳ تصویر یا توضیح برای احساس برند خود بنویسید.
+            </div>
+            <div class="section">
+                <div class="section-title">تصاویر انتخابی</div>
+                <div class="field"><label>تصویر ۱ (احساس کلی)</label><textarea id="p4_img1" placeholder="توضیح تصویر یا لینک..."></textarea></div>
+                <div class="field"><label>تصویر ۲ (رنگ / بافت)</label><textarea id="p4_img2" placeholder="توضیح تصویر یا لینک..."></textarea></div>
+                <div class="field"><label>تصویر ۳ (شکل / ساختار)</label><textarea id="p4_img3" placeholder="توضیح تصویر یا لینک..."></textarea></div>
+            </div>
+            <div class="section">
+                <div class="section-title">پالت رنگ (۵ رنگ)</div>
+                <div class="row-5">
+                    <div class="field"><label>رنگ ۱</label><input id="p4_color1" placeholder="نام رنگ"></div>
+                    <div class="field"><label>رنگ ۲</label><input id="p4_color2" placeholder="نام رنگ"></div>
+                    <div class="field"><label>رنگ ۳</label><input id="p4_color3" placeholder="نام رنگ"></div>
+                    <div class="field"><label>رنگ ۴ (اکسنت)</label><input id="p4_color4" placeholder="نام رنگ"></div>
+                    <div class="field"><label>رنگ ۵ (پس‌زمینه)</label><input id="p4_color5" placeholder="نام رنگ"></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(3)">← قبلی</button>
+                <button class="btn btn-success" onclick="saveAndEmail(4)">💾 ذخیره و ارسال مرحله ۴</button>
+                <button class="btn btn-primary" onclick="goToPage(5)">بعدی →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 5 ==================== -->
+        <div class="page" id="page5">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۵ · اعتبارسنجی مشتریان</h2>
+            <div class="instruction-box">
+                این فرم را به ۵ مشتری بدهید تا تکمیل کنند. سپس نتایج را وارد کنید.
+            </div>
+            <div class="section">
+                <div class="section-title">تست سه جمله (نتایج)</div>
+                <div class="field"><label>تعداد مشتریانی که جمله‌ی ما را شناسایی کردند</label><input id="p5_identified" type="number" min="0" max="5" placeholder="عدد بین ۰ تا ۵"></div>
+                <div class="field"><label>پر تکرارترین خودرو (تشبیه مشتریان)</label><input id="p5_car" placeholder="نام خودرو"></div>
+                <div class="field">
+                    <label>آیا با تصویر درونی تیم همخوانی دارد؟</label>
+                    <select id="p5_match">
+                        <option value="">انتخاب کنید...</option>
+                        <option value="بله">بله</option>
+                        <option value="خیر">خیر</option>
+                        <option value="تا حدی">تا حدی</option>
+                    </select>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">تصمیم نهایی</div>
+                <div class="choice-group">
+                    <div class="choice-row">
+                        <label><input type="radio" name="p5_verdict" value="تأیید"> ✅ تأیید برند</label>
+                        <label><input type="radio" name="p5_verdict" value="بازنگری"> 🔄 بازنگری (برگشت به مرحله ۲)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(4)">← قبلی</button>
+                <button class="btn btn-success" onclick="saveAndEmail(5)">💾 ذخیره و ارسال مرحله ۵</button>
+                <button class="btn btn-primary" onclick="goToPage(6)">بعدی →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 6 ==================== -->
+        <div class="page" id="page6">
+            <h2 style="margin-bottom:16px; font-size:20px;">ابزار ۶ · پرسشنامه‌های انفرادی</h2>
+            <div class="instruction-box">
+                به سؤالات زیر با صداقت کامل پاسخ دهید.
+            </div>
+            <div class="section">
+                <div class="section-title">کاوش هویتی</div>
+                <div class="field"><label>Q1. شخصیت مشهور تکنولوژی؟</label><textarea id="p6_q1" placeholder="..."></textarea></div>
+                <div class="field"><label>Q2. کاری که رقبا هرگز نمی‌کنند؟</label><textarea id="p6_q2" placeholder="..."></textarea></div>
+                <div class="field"><label>Q3. کاربر چه دردی دارد؟</label><textarea id="p6_q3" placeholder="..."></textarea></div>
+            </div>
+            <div class="section">
+                <div class="section-title">سناریوهای لحن</div>
+                <div class="field"><label>Q5. مشتری خطایی در داکیومنت پیدا کرده</label><textarea id="p6_q5" placeholder="..."></textarea></div>
+                <div class="field"><label>Q6. دانشجو پرسید «آیا باید کد بزنم؟»</label><textarea id="p6_q6" placeholder="..."></textarea></div>
+                <div class="field"><label>Q7. رقیب گفت محصول ما کند است</label><textarea id="p6_q7" placeholder="..."></textarea></div>
+            </div>
+            <div class="section">
+                <div class="section-title">پیش‌بینی اعتبارسنجی</div>
+                <div class="field"><label>Q11. مشتریان چه خودرویی تشبیه می‌کنند؟</label><textarea id="p6_q11" placeholder="..."></textarea></div>
+                <div class="field"><label>Q12. چند درصد جمله را تشخیص می‌دهند؟</label><input id="p6_q12" placeholder="مثلاً ۶۰٪"></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(5)">← قبلی</button>
+                <button class="btn btn-success" onclick="saveAndEmail(6)">💾 ذخیره و ارسال مرحله ۶</button>
+                <button class="btn btn-primary" onclick="goToPage(7)">رفتن به داشبورد →</button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 7 ==================== -->
+        <div class="page" id="page7">
+            <h2 style="margin-bottom:16px; font-size:20px;">📊 ابزار ۷ · داشبورد نهایی</h2>
+            <div class="instruction-box">
+                این داشبورد همه‌ی داده‌های ذخیره‌شده شما را نمایش می‌دهد.
+            </div>
+            <div id="dashboardContent">
+                <p style="color:#8a8a8a; text-align:center; padding:20px;">لطفاً ابتدا مراحل ۱ تا ۶ را ذخیره کنید.</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="goToPage(6)">← قبلی</button>
+                <button class="btn btn-success" onclick="renderDashboard()">🔄 بروزرسانی داشبورد</button>
+                <button class="btn btn-primary" onclick="downloadAllJSON()">📥 دانلود همه داده‌ها (JSON)</button>
+                <button class="btn btn-danger" onclick="clearAll()">🗑️ پاک کردن همه داده‌ها</button>
+            </div>
+        </div>
+
+        <div class="footer-text">
+            تمام داده‌ها در مرورگر شما ذخیره می‌شوند · هر مرحله به ایمیل مدیر ارسال می‌شود
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ADMIN DASHBOARD (برای شما - بعد از دریافت فایل‌های JSON)      -->
+    <!-- ============================================================ -->
+    <div class="app" style="margin-top:30px; border-color:#6a6a6a;" id="adminApp">
+        <h2 style="font-size:20px; margin-bottom:16px;">📈 داشبورد مدیریت · خروجی کلی</h2>
+        <div class="instruction-box">
+            <strong>📌 نحوه استفاده:</strong> فایل‌های JSON ارسال‌شده توسط کاربران را آپلود کنید. سیستم به‌طور خودکار همه را ترکیب می‌کند و خروجی کلی نمایش می‌دهد.
+        </div>
+
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <p style="font-size:16px; font-weight:700;">📂 کلیک کنید یا فایل‌ها را بکشید و رها کنید</p>
+            <p style="font-size:13px; color:#6a6a6a;">فایل‌های JSON (چندین فایل را هم‌زمان انتخاب کنید)</p>
+            <input type="file" id="fileInput" multiple accept=".json" onchange="handleFiles(event)">
+        </div>
+
+        <div id="adminResult">
+            <p style="color:#8a8a8a; text-align:center; padding:20px;">هنوز فایلی آپلود نشده است.</p>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        // 🔴 فقط این قسمت را ویرایش کنید:
+        const ADMIN_EMAIL = 'hanifgh.68@gmail.com'; // <-- ایمیل خود را وارد کنید
+
+        // EmailJS Configuration (برای ارسال ایمیل)
+        // برای استفاده از این بخش، در EmailJS ثبت‌نام کنید
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'BBXUB4O08pFyKoxDu', // از پنل EmailJS
+            SERVICE_ID: 'service_88pxywb', // از پنل EmailJS
+            TEMPLATE_ID: 'template_hf3p0ao' // از پنل EmailJS
+        };
+
+        // اگر نمی‌خواهید از EmailJS استفاده کنید، از روش جایگزین (کپی JSON) استفاده کنید
+        // ============================================================
+
+        // ============================================================
+        // DATA LAYER
+        // ============================================================
+        function getData() {
+            try {
+                return JSON.parse(localStorage.getItem('branding_data')) || {};
+            } catch { return {}; }
+        }
+
+        function setData(data) {
+            localStorage.setItem('branding_data', JSON.stringify(data));
+        }
+
+        function getPageData(page) {
+            const all = getData();
+            return all[page] || {};
+        }
+
+        function setPageData(page, data) {
+            const all = getData();
+            all[page] = data;
+            setData(all);
+        }
+
+        function getUserName() {
+            return document.getElementById('userName').value.trim() || 'کاربر ناشناس';
+        }
+
+        function saveUser() {
+            const name = document.getElementById('userName').value.trim();
+            const all = getData();
+            all.userName = name;
+            setData(all);
+            document.getElementById('saveStatus').textContent = '✓ ذخیره شد';
+        }
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        function goToPage(num) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + num).classList.add('active');
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.nav button[data-page="page${num}"]`).classList.add('active');
+            if (num === 7) renderDashboard();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // COLLECT PAGE DATA
+        // ============================================================
+        function collectPageData(page) {
+            const data = {};
+            const prefix = 'p' + page + '_';
+            document.querySelectorAll(`#page${page} input, #page${page} textarea, #page${page} select`).forEach(el => {
+                const id = el.id;
+                if (id && id.startsWith(prefix)) {
+                    const key = id.replace(prefix, '');
+                    if (el.type === 'radio') {
+                        if (el.checked) {
+                            data[key] = el.value;
+                        }
+                    } else if (el.type === 'checkbox') {
+                        data[key] = el.checked;
+                    } else {
+                        data[key] = el.value;
+                    }
+                }
+            });
+            // Radio buttons are handled separately via name
+            if (page === 2) {
+                ['q1', 'q2', 'q3', 'q4'].forEach(q => {
+                    const sel = document.querySelector(`input[name="p2_${q}"]:checked`);
+                    if (sel) data[q] = sel.value;
+                });
+            }
+            if (page === 5) {
+                const sel = document.querySelector(`input[name="p5_verdict"]:checked`);
+                if (sel) data.verdict = sel.value;
+            }
+            return data;
+        }
+
+        function populatePageData(page) {
+            const data = getPageData(page);
+            const prefix = 'p' + page + '_';
+            document.querySelectorAll(`#page${page} input, #page${page} textarea, #page${page} select`).forEach(el => {
+                const id = el.id;
+                if (id && id.startsWith(prefix)) {
+                    const key = id.replace(prefix, '');
+                    if (el.type === 'radio') {
+                        if (data[key] === el.value) el.checked = true;
+                    } else if (el.type === 'checkbox') {
+                        el.checked = data[key] || false;
+                    } else {
+                        el.value = data[key] || '';
+                    }
+                }
+            });
+            // Radio buttons by name
+            if (page === 2) {
+                ['q1', 'q2', 'q3', 'q4'].forEach(q => {
+                    const val = data[q];
+                    if (val) {
+                        const radio = document.querySelector(`input[name="p2_${q}"][value="${val}"]`);
+                        if (radio) radio.checked = true;
+                    }
+                });
+            }
+            if (page === 5) {
+                const val = data.verdict;
+                if (val) {
+                    const radio = document.querySelector(`input[name="p5_verdict"][value="${val}"]`);
+                    if (radio) radio.checked = true;
+                }
+            }
+            // Update nav badge
+            updateNavBadge(page);
+        }
+
+        function updateNavBadge(page) {
+            const data = getPageData(page);
+            const hasData = Object.keys(data).length > 0;
+            const btn = document.querySelector(`.nav button[data-page="page${page}"]`);
+            if (hasData) {
+                btn.classList.add('saved');
+            } else {
+                btn.classList.remove('saved');
+            }
+        }
+
+        // ============================================================
+        // SAVE & EMAIL
+        // ============================================================
+        function savePage(page) {
+            const data = collectPageData(page);
+            const userName = getUserName();
+            data._userName = userName;
+            data._timestamp = new Date().toISOString();
+            data._step = page;
+            setPageData(page, data);
+            updateNavBadge(page);
+            showToast('✅ مرحله ' + page + ' ذخیره شد!', 'success');
+            return data;
+        }
+
+        async function saveAndEmail(page) {
+            const data = savePage(page);
+
+            // ساخت JSON برای ارسال
+            const jsonData = {
+                user: getUserName(),
+                step: page,
+                timestamp: new Date().toISOString(),
+                data: data
+            };
+
+            const jsonString = JSON.stringify(jsonData, null, 2);
+
+            // ارسال به ایمیل از طریق EmailJS
+            try {
+                await sendEmail(jsonString, page);
+                showToast('📧 ایمیل مرحله ' + page + ' ارسال شد!', 'success');
+            } catch (err) {
+                showToast('⚠️ ایمیل ارسال نشد. اما داده ذخیره شد. ' + err.message, 'error');
+                // راه حل جایگزین: کپی JSON
+                copyToClipboard(jsonString);
+                showToast('📋 JSON در کلیپ‌بورد کپی شد. لطفاً به مدیر ارسال کنید.', 'info');
+            }
+        }
+
+        // ============================================================
+        // EMAIL SENDER (EmailJS)
+        // ============================================================
+        async function sendEmail(jsonData, step) {
+            // اگر EmailJS تنظیم نشده، از روش جایگزین استفاده کن
+            if (EMAILJS_CONFIG.PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') {
+                throw new Error('EmailJS not configured. Please set your keys.');
+            }
+
+            // بارگذاری EmailJS
+            if (typeof emailjs === 'undefined') {
+                throw new Error('EmailJS library not loaded.');
+            }
+
+            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+
+            const params = {
+                to_email: ADMIN_EMAIL,
+                user_name: getUserName(),
+                step: 'مرحله ' + step,
+                data: jsonData,
+                subject: `برندینگ - مرحله ${step} - ${getUserName()}`
+            };
+
+            const response = await emailjs.send(
+                EMAILJS_CONFIG.SERVICE_ID,
+                EMAILJS_CONFIG.TEMPLATE_ID,
+                params
+            );
+
+            if (response.status !== 200) {
+                throw new Error('EmailJS error: ' + response.text);
+            }
+            return response;
+        }
+
+        // ============================================================
+        // FALLBACK: COPY TO CLIPBOARD
+        // ============================================================
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ============================================================
+        // DASHBOARD (PAGE 7)
+        // ============================================================
+        function renderDashboard() {
+            const container = document.getElementById('dashboardContent');
+            const allData = getData();
+            const userName = allData.userName || 'کاربر ناشناس';
+
+            // جمع‌آوری تمام داده‌های مراحل
+            const steps = {};
+            let hasAnyData = false;
+            for (let i = 1; i <= 6; i++) {
+                const d = getPageData(i);
+                if (Object.keys(d).length > 0) {
+                    steps[i] = d;
+                    hasAnyData = true;
+                }
+            }
+
+            if (!hasAnyData) {
+                container.innerHTML = `
+                    <p style="color:#8a8a8a; text-align:center; padding:20px;">
+                        هیچ داده‌ای ذخیره نشده است. لطفاً مراحل ۱ تا ۶ را تکمیل کنید.
+                    </p>
+                `;
+                return;
+            }
+
+            let html = `
+                <div style="border:2px solid #1a1a1a; border-radius:8px; padding:16px; margin-bottom:16px; background:#f5f5f5;">
+                    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                        <span><strong>👤 کاربر:</strong> ${userName}</span>
+                        <span><strong>📅 تاریخ:</strong> ${new Date().toLocaleString('fa-IR')}</span>
+                        <span><strong>✅ مراحل تکمیل‌شده:</strong> ${Object.keys(steps).length} از ۶</span>
+                    </div>
+                </div>
+            `;
+
+            // نمایش هر مرحله
+            for (let i = 1; i <= 6; i++) {
+                const d = steps[i];
+                if (!d) {
+                    html += `
+                        <div class="section" style="opacity:0.5;">
+                            <div class="section-title">مرحله ${i} · تکمیل نشده</div>
+                            <p style="color:#8a8a8a;">این مرحله هنوز ذخیره نشده است.</p>
+                        </div>
+                    `;
+                    continue;
+                }
+
+                html += `<div class="section"><div class="section-title">مرحله ${i}</div><div class="dashboard-grid">`;
+
+                // نمایش فیلدها
+                const excludeKeys = ['_userName', '_timestamp', '_step'];
+                for (const [key, value] of Object.entries(d)) {
+                    if (excludeKeys.includes(key)) continue;
+                    if (value === '' || value === undefined || value === null) continue;
+                    if (typeof value === 'object') {
+                        html += `
+                            <div class="dashboard-card">
+                                <span class="label">${key}</span>
+                                <div class="value">${JSON.stringify(value)}</div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="dashboard-card">
+                                <span class="label">${key}</span>
+                                <div class="value">${String(value).substring(0, 200)}${String(value).length > 200 ? '...' : ''}</div>
+                            </div>
+                        `;
+                    }
+                }
+
+                html += `</div></div>`;
+            }
+
+            // مرحله ۷ (داشبورد نهایی) - ترکیب همه
+            html += `
+                <div class="section" style="border:3px solid #1a1a1a; background:#f5f5f5;">
+                    <div class="section-title">📊 خروجی نهایی</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="dashboard-card">
+                            <span class="label">تعداد مراحل تکمیل‌شده</span>
+                            <div class="value" style="font-size:24px; font-weight:700;">${Object.keys(steps).length} / ۶</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <span class="label">وضعیت کلی</span>
+                            <div class="value" style="font-size:18px; font-weight:700;">
+                                ${Object.keys(steps).length >= 6 ? '✅ کامل' : '⏳ ناقص'}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; border-top:2px solid #d4d4d4; padding-top:12px;">
+                        <button class="btn btn-primary" onclick="downloadAllJSON()" style="width:100%;">
+                            📥 دانلود همه داده‌ها (JSON)
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // DOWNLOAD ALL DATA
+        // ============================================================
+        function downloadAllJSON() {
+            const allData = getData();
+            const userName = allData.userName || 'کاربر ناشناس';
+            const exportData = {
+                userName: userName,
+                exportedAt: new Date().toISOString(),
+                steps: {}
+            };
+
+            for (let i = 1; i <= 6; i++) {
+                exportData.steps[i] = getPageData(i);
+            }
+
+            const json = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `branding_${userName}_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📥 فایل JSON دانلود شد!', 'success');
+        }
+
+        // ============================================================
+        // CLEAR ALL
+        // ============================================================
+        function clearAll() {
+            if (confirm('آیا مطمئن هستید که می‌خواهید همه داده‌ها را پاک کنید؟')) {
+                localStorage.removeItem('branding_data');
+                location.reload();
+            }
+        }
+
+        // ============================================================
+        // ADMIN DASHBOARD - پردازش فایل‌های JSON
+        // ============================================================
+        let allUsersData = [];
+
+        function handleFiles(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const container = document.getElementById('adminResult');
+            container.innerHTML = '<p style="text-align:center;">⏳ در حال پردازش فایل‌ها...</p>';
+
+            allUsersData = [];
+
+            let processed = 0;
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        allUsersData.push(data);
+                    } catch (err) {
+                        console.error('Error parsing file:', files[i].name, err);
+                    }
+                    processed++;
+                    if (processed === files.length) {
+                        renderAdminResult();
+                    }
+                };
+                reader.readAsText(files[i]);
+            }
+
+            // اگر فایلی نبود
+            if (files.length === 0) {
+                renderAdminResult();
+            }
+        }
+
+        function renderAdminResult() {
+            const container = document.getElementById('adminResult');
+
+            if (allUsersData.length === 0) {
+                container.innerHTML = `
+                    <p style="color:#8a8a8a; text-align:center; padding:20px;">
+                        هیچ فایل معتبری آپلود نشد. لطفاً فایل‌های JSON را انتخاب کنید.
+                    </p>
+                `;
+                return;
+            }
+
+            const totalUsers = allUsersData.length;
+
+            // جمع‌آوری آمار
+            let totalSteps = {};
+            let allVerdicts = [];
+            let allCars = [];
+            let allIdentified = [];
+
+            for (const user of allUsersData) {
+                const steps = user.steps || {};
+                const stepKeys = Object.keys(steps);
+                totalSteps[stepKeys.length] = (totalSteps[stepKeys.length] || 0) + 1;
+
+                // مرحله ۵ (اعتبارسنجی)
+                const step5 = steps[5] || {};
+                if (step5.verdict) allVerdicts.push(step5.verdict);
+                if (step5.car) allCars.push(step5.car);
+                if (step5.identified) allIdentified.push(parseInt(step5.identified) || 0);
+            }
+
+            // محاسبه میانگین‌ها
+            const avgIdentified = allIdentified.length > 0 ?
+                (allIdentified.reduce((a, b) => a + b, 0) / allIdentified.length).toFixed(1) :
+                'N/A';
+
+            const verdictCounts = {};
+            for (const v of allVerdicts) {
+                verdictCounts[v] = (verdictCounts[v] || 0) + 1;
+            }
+
+            const carCounts = {};
+            for (const c of allCars) {
+                if (c) carCounts[c] = (carCounts[c] || 0) + 1;
+            }
+            const topCar = Object.entries(carCounts).sort((a, b) => b[1] - a[1])[0];
+
+            // مرحله ۲ (موقعیت‌یابی) - جمع‌آوری
+            const positionCounts = {
+                q1: { A: 0, B: 0 },
+                q2: { A: 0, B: 0 },
+                q3: { A: 0, B: 0 },
+                q4: { A: 0, B: 0 }
+            };
+
+            for (const user of allUsersData) {
+                const steps = user.steps || {};
+                const step2 = steps[2] || {};
+                if (step2.q1) positionCounts.q1[step2.q1 === 'پیشگام' ? 'A' : 'B']++;
+                if (step2.q2) positionCounts.q2[step2.q2 === 'سخت‌افزار' ? 'A' : 'B']++;
+                if (step2.q3) positionCounts.q3[step2.q3 === 'استارتاپ' ? 'A' : 'B']++;
+                if (step2.q4) positionCounts.q4[step2.q4 === 'مستندات' ? 'A' : 'B']++;
+            }
+
+            // ساخت HTML
+            let html = `
+                <div class="summary-stats">
+                    <div class="stat-card"><div class="number">${totalUsers}</div><div class="stat-label">تعداد کاربران</div></div>
+                    <div class="stat-card"><div class="number">${avgIdentified}</div><div class="stat-label">میانگین تشخیص (از ۵)</div></div>
+                    <div class="stat-card"><div class="number">${topCar ? topCar[0] : 'N/A'}</div><div class="stat-label">پر تکرارترین خودرو</div></div>
+                    <div class="stat-card"><div class="number">${Object.keys(verdictCounts).length > 0 ? Object.keys(verdictCounts).join('/') : 'N/A'}</div><div class="stat-label">تصمیم نهایی</div></div>
+                </div>
+            `;
+
+            // موقعیت‌یابی کلی
+            html += `
+                <div class="section">
+                    <div class="section-title">📍 موقعیت‌یابی (نظر جمعی)</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px;">
+                        <div style="border:1px solid #d4d4d4; border-radius:4px; padding:8px;">
+                            <strong>ریسک‌پذیری:</strong><br>
+                            پیشگام: ${positionCounts.q1.A} نفر (${totalUsers > 0 ? Math.round(positionCounts.q1.A/totalUsers*100) : 0}%)<br>
+                            پایدار: ${positionCounts.q1.B} نفر (${totalUsers > 0 ? Math.round(positionCounts.q1.B/totalUsers*100) : 0}%)
+                        </div>
+                        <div style="border:1px solid #d4d4d4; border-radius:4px; padding:8px;">
+                            <strong>معماری:</strong><br>
+                            سخت‌افزار: ${positionCounts.q2.A} نفر (${totalUsers > 0 ? Math.round(positionCounts.q2.A/totalUsers*100) : 0}%)<br>
+                            نرم‌افزار: ${positionCounts.q2.B} نفر (${totalUsers > 0 ? Math.round(positionCounts.q2.B/totalUsers*100) : 0}%)
+                        </div>
+                        <div style="border:1px solid #d4d4d4; border-radius:4px; padding:8px;">
+                            <strong>مخاطب:</strong><br>
+                            استارتاپ: ${positionCounts.q3.A} نفر (${totalUsers > 0 ? Math.round(positionCounts.q3.A/totalUsers*100) : 0}%)<br>
+                            سازمان: ${positionCounts.q3.B} نفر (${totalUsers > 0 ? Math.round(positionCounts.q3.B/totalUsers*100) : 0}%)
+                        </div>
+                        <div style="border:1px solid #d4d4d4; border-radius:4px; padding:8px;">
+                            <strong>پشتیبانی:</strong><br>
+                            مستندات: ${positionCounts.q4.A} نفر (${totalUsers > 0 ? Math.round(positionCounts.q4.A/totalUsers*100) : 0}%)<br>
+                            جامعه: ${positionCounts.q4.B} نفر (${totalUsers > 0 ? Math.round(positionCounts.q4.B/totalUsers*100) : 0}%)
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // جدول جزئیات هر کاربر
+            html += `
+                <div class="section">
+                    <div class="section-title">📋 جزئیات هر کاربر</div>
+                    <div style="overflow-x:auto;">
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>کاربر</th>
+                                    <th>مراحل</th>
+                                    <th>موقعیت (Q1/Q2/Q3/Q4)</th>
+                                    <th>تصمیم</th>
+                                    <th>خودرو</th>
+                                    <th>تشخیص</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+            allUsersData.forEach((user, idx) => {
+                const steps = user.steps || {};
+                const step2 = steps[2] || {};
+                const step5 = steps[5] || {};
+                const stepCount = Object.keys(steps).length;
+
+                html += `
+                        <tr class="user-row">
+                            <td>${idx + 1}</td>
+                            <td>${user.userName || 'ناشناس'}</td>
+                            <td>${stepCount}/۶</td>
+                            <td>${step2.q1 || '-'}/${step2.q2 || '-'}/${step2.q3 || '-'}/${step2.q4 || '-'}</td>
+                            <td>${step5.verdict || '-'}</td>
+                            <td>${step5.car || '-'}</td>
+                            <td>${step5.identified || '-'}</td>
+                        </tr>
+                    `;
+            });
+
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // خروجی کلی مرحله ۷
+            html += `
+                <div class="section" style="border:3px solid #1a1a1a; background:#f5f5f5;">
+                    <div class="section-title">🎯 خروجی کلی نهایی</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="dashboard-card">
+                            <span class="label">تعداد کاربران</span>
+                            <div class="value" style="font-size:24px; font-weight:700;">${totalUsers}</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <span class="label">میانگین تشخیص برند</span>
+                            <div class="value" style="font-size:24px; font-weight:700;">${avgIdentified} / ۵</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; border-top:2px solid #d4d4d4; padding-top:12px;">
+                        <div class="verdict-box">
+                            ${Object.keys(verdictCounts).length > 0 ? 
+                                Object.entries(verdictCounts).map(([v, c]) => 
+                                    `${v}: ${c} نفر (${Math.round(c/totalUsers*100)}%)`
+                                ).join(' | ') : 
+                                'هنوز تصمیمی ثبت نشده است'
+                            }
+                        </div>
+                        <div style="margin-top:8px; text-align:center; font-size:13px; color:#5a5a5a;">
+                            ${topCar ? `🚗 پر تکرارترین خودرو: <strong>${topCar[0]}</strong> (${topCar[1]} بار)` : ''}
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="downloadAdminResult()">📥 دانلود خروجی کلی (JSON)</button>
+                        <button class="btn btn-success" onclick="copyAdminResult()">📋 کپی خروجی به کلیپ‌بورد</button>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // ADMIN EXPORT
+        // ============================================================
+        function downloadAdminResult() {
+            const exportData = {
+                totalUsers: allUsersData.length,
+                exportedAt: new Date().toISOString(),
+                users: allUsersData,
+                summary: {
+                    totalUsers: allUsersData.length,
+                    // ... می‌توانید آمار بیشتر اضافه کنید
+                }
+            };
+            const json = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `branding_admin_result_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📥 خروجی کلی دانلود شد!', 'success');
+        }
+
+        function copyAdminResult() {
+            const text = JSON.stringify(allUsersData, null, 2);
+            copyToClipboard(text);
+            showToast('📋 خروجی کلی در کلیپ‌بورد کپی شد!', 'success');
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        // بارگذاری نام کاربر
+        const saved = getData();
+        if (saved.userName) {
+            document.getElementById('userName').value = saved.userName;
+        }
+
+        // بارگذاری داده‌های هر صفحه
+        for (let i = 1; i <= 6; i++) {
+            populatePageData(i);
+        }
+
+        // نمایش داشبورد در صورت نیاز
+        const activePage = document.querySelector('.page.active');
+        if (activePage && activePage.id === 'page7') {
+            renderDashboard();
+        }
+
+        // Drag and Drop برای بخش مدیریت
+        const uploadArea = document.getElementById('uploadArea');
+        if (uploadArea) {
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#1a1a1a';
+                uploadArea.style.background = '#f0f0f0';
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#d4d4d4';
+                uploadArea.style.background = '#fafafa';
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#d4d4d4';
+                uploadArea.style.background = '#fafafa';
+                const files = e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    document.getElementById('fileInput').files = files;
+                    handleFiles({ target: { files: files } });
+                }
+            });
+        }
+
+        console.log('✅ برنامه بارگذاری شد!');
+        console.log('📧 ایمیل مدیر:', ADMIN_EMAIL);
+    </script>
+
+</body>
+</html>
